@@ -4,12 +4,8 @@
   "description": "A working browser-shim for WASI preview1, with lots of filesystem options",
   "type": "module",
   "exports": {
-    ".": {
-      "import": "./docs/easywasi.js"
-    },
-    "defs": {
-      "import": "./docs/defs.js"
-    }
+    "default": "./docs/easywasi.js",
+    "defs": "./docs/defs.js"
   },
   "scripts": {
     "start": "npx -y live-server docs"
