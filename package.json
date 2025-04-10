@@ -1,6 +1,6 @@
 {
-  "name": "easywasi",
-  "version": "0.0.6",
+  "name": "@easywasm/wasi",
+  "version": "0.0.0",
   "description": "A working browser-shim for WASI preview1, with lots of filesystem options",
   "type": "module",
   "exports": {
@@ -15,16 +15,12 @@
     "WASM",
     "browser"
   ],
-  "homepage": "https://konsumer.js.org/easywasi",
+  "homepage": "https://easywasm.github.io/wasi/",
   "author": "David Konsumer <konsumer@jetboystudio.com>",
   "license": "MIT",
-  "repository": "konsumer/easywasi",
+  "repository": "easywasm/wasi",
   "files": [
     "docs/defs.js",
     "docs/easywasi.js"
-  ],
-  "sideEffects": false,
-  "engines": {
-    "node": ">=18"
-  }
+  ]
 }
