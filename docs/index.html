@@ -2,8 +2,9 @@
   <title>easywasi example</title>
   <style>
     /* this is not realy needed, but make it look nicer */
-    body, html {
-      margin:0;
+    body,
+    html {
+      margin: 0;
       height: 90vh;
     }
     body {
@@ -29,7 +30,7 @@
     }
 
     textarea::-webkit-scrollbar-track {
-      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     }
 
     textarea::-webkit-scrollbar-thumb {
@@ -46,7 +47,16 @@
         "easywasi": "./easywasi.js",
         "@zenfs/core": "https://esm.sh/@zenfs/core",
         "@zenfs/dom": "https://esm.sh/@zenfs/dom",
-        "@zenfs/zip": "https://esm.sh/@zenfs/zip"
+        "@zenfs/archives": "https://esm.sh/@zenfs/archives"
+      }
+    }
+  </script>
+
+  <!-- this is nasty, but there is a bug in CDN/build -->
+  <script type="importmap">
+    {
+      "imports": {
+        "https://esm.sh/@zenfs/core@%5E2.0.0/path?target=es2022": "https://esm.sh/@zenfs/core/dist/path.js"
       }
     }
   </script>
@@ -65,7 +75,7 @@
     import { WasiPreview1 } from 'easywasi'
     import { configure, InMemory, fs } from '@zenfs/core'
     import { IndexedDB } from '@zenfs/dom'
-    import { Zip } from '@zenfs/zip'
+    import { Zip } from '@zenfs/archives'
 
     await configure({
       mounts: {
