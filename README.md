@@ -6,11 +6,11 @@ If you need framebuffer/audio/input WASI devices, check out [web-zen-dev](https:
 
 ## install
 
-Install into your bundled project with `npm i easywasi`. You can also use it on the web, directly from cdn:
+Install into your bundled project with `npm i @easywasm/wasi`. You can also use it on the web, directly from cdn:
 
 ```html
 <script type="module">
-import WasiPreview1 from 'https://esm.sh/easywasi'
+import WasiPreview1 from 'https://esm.sh/@easywasm/wasi'
 </script>
 ```
 
@@ -19,7 +19,7 @@ And I like to use sourcemaps:
 <script type="importmap">
   {
     "imports": {
-      "easywasi": "https://esm.sh/easywasi",
+      "@easywasm/wasi": "https://esm.sh/@easywasm/wasi",
       "@zenfs/core": "https://esm.sh/@zenfs/core",
       "@zenfs/dom": "https://esm.sh/@zenfs/dom",
       "@zenfs/zip": "https://esm.sh/@zenfs/zip"
@@ -27,7 +27,7 @@ And I like to use sourcemaps:
   }
 </script>
 <script type="module">
-import { WasiPreview1 } from 'easywasi'
+import { WasiPreview1 } from '@easywasm/wasi'
 import { configure, InMemory, fs } from '@zenfs/core'
 import { IndexedDB } from '@zenfs/dom'
 import { Zip } from '@zenfs/zip'
@@ -40,7 +40,7 @@ import { Zip } from '@zenfs/zip'
 You can use it without a filesystem, like this:
 
 ```js
-import WasiPreview1 from 'easywasi'
+import WasiPreview1 from '@easywasm/wasi'
 
 const wasi_snapshot_preview1 = new WasiPreview1()
 
@@ -60,7 +60,7 @@ Things to note:
 - `/mnt` is a bit special in zenfs, and not traversed by a file-list, so if you want that, put it somewhere else
 
 ```js
-import WasiPreview1 from 'easywasi'
+import WasiPreview1 from '@easywasm/wasi'
 import { configure, InMemory } from '@zenfs/core'
 import { IndexedDB } from '@zenfs/dom'
 import { Zip } from '@zenfs/zip'
@@ -90,7 +90,7 @@ Have a look in [example](docs) to see how I fit it all together.
 Keep in mind, you can easily override every function yourself, too, like if you want to implement the socket-API, which is the only thing I left out:
 
 ```js
-import {defs, WasiPreview1} from 'easywasi'
+import {defs, WasiPreview1} from '@easywasm/wasi'
 
 class WasiPreview1WithSockets extends WasiPreview1 {
   constructor(options={}) {

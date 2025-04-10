@@ -44,7 +44,7 @@
   <script type="importmap">
     {
       "imports": {
-        "easywasi": "./easywasi.js",
+        "@easywasm/wasi": "./easywasm/easywasi.js",
         "@zenfs/core": "https://esm.sh/@zenfs/core",
         "@zenfs/dom": "https://esm.sh/@zenfs/dom",
         "@zenfs/archives": "https://esm.sh/@zenfs/archives"
@@ -52,7 +52,7 @@
     }
   </script>
 
-  <!-- this is nasty, but there is a bug in CDN/build -->
+  <!-- this is nasty, but there is a bug in CDN/zenfs -->
   <script type="importmap">
     {
       "imports": {
@@ -72,7 +72,7 @@
   </div>
 
   <script type="module">
-    import { WasiPreview1 } from 'easywasi'
+    import { WasiPreview1 } from '@easywasm/wasi'
     import { configure, InMemory, fs } from '@zenfs/core'
     import { IndexedDB } from '@zenfs/dom'
     import { Zip } from '@zenfs/archives'
