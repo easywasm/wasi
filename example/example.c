@@ -52,27 +52,13 @@ int main(int argc, char *argv[]) {
   srand(time(NULL));
   printf("\nrandom works: %hhu\n", my_rand());
 
-  char* filename = "/zip/cyber.txt";
+  char* filename = "cyber.txt";
   if (access(filename, F_OK) == 0) {
     printf("\ncyber textfile exists: %s\n\n", filename);
     print_file(filename);
     printf("\n\n");
   } else {
     fprintf(stderr, "cyber textfile does not exist: %s\n", filename);
-    return 1;
-  }
-
-  filename = "/home/counter";
-  if (access(filename, F_OK) == 0) {
-    FILE* fin = fopen(filename, "rb");
-    unsigned char counter = fgetc(fin);
-    printf("counter file (%s) exists and was tested %u times.\n", filename, counter);
-    fclose(fin);
-    FILE* fout = fopen(filename, "wb");
-    fputc(counter + 1, fout);
-    fclose(fout);
-  } else {
-    fprintf(stderr, "counter file does not exist: %s\n", filename);
     return 1;
   }
 
