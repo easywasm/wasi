@@ -45,18 +45,7 @@
     {
       "imports": {
         "@easywasm/wasi": "./easywasm/easywasi.js",
-        "@zenfs/core": "https://esm.sh/@zenfs/core",
-        "@zenfs/dom": "https://esm.sh/@zenfs/dom",
-        "@zenfs/archives": "https://esm.sh/@zenfs/archives"
-      }
-    }
-  </script>
-
-  <!-- this is nasty, but there is a bug in CDN/zenfs -->
-  <script type="importmap">
-    {
-      "imports": {
-        "https://esm.sh/@zenfs/core@%5E2.0.0/path?target=es2022": "https://esm.sh/@zenfs/core/dist/path.js"
+        "fflatefs": "https://gist.githubusercontent.com/konsumer/e5841b093c0b5aac80eb2a7a5b14be38/raw/3b17649341382d90d2f9050119cbd059b5d90dda/fflatefs.js"
       }
     }
   </script>
@@ -73,25 +62,10 @@
 
   <script type="module">
     import { WasiPreview1 } from '@easywasm/wasi'
-    import { configure, InMemory, fs } from '@zenfs/core'
-    import { IndexedDB } from '@zenfs/dom'
-    import { Zip } from '@zenfs/archives'
-
-    await configure({
-      mounts: {
-        '/zip': {
-          backend: Zip,
-          data: await fetch('example.zip').then((r) => r.arrayBuffer())
-        },
-        '/tmp': InMemory, // goes away on refresh
-        '/home': IndexedDB // lives between page-loads
-      }
-    })
-
-    // write persistant counter file, if it does not exist
-    if (!fs.existsSync('/home/counter')) {
-      fs.writeFileSync('/home/counter', '\0')
-    }
+    import WasiPreview1 from 'https://esm.sh/@easywasm/wasi'
+    import fflatefs from 'fflatefs'
+    
+    const fs = await fflatefs('example.zip')
 
     const wasi_snapshot_preview1 = new WasiPreview1({
       fs,
