@@ -44,7 +44,9 @@
   <script type="importmap">
     {
       "imports": {
-        "@easywasm/wasi": "./easywasm/easywasi.js"
+        "@easywasm/wasi": "./easywasm/easywasi.js",
+        "fflate": "https://esm.sh/fflate/esm/browser.js",
+        "fflatefs": "https://easywasm.github.io/wasi/fflatefs.js"
       }
     }
   </script>
@@ -61,7 +63,7 @@
 
   <script type="module">
     import WasiPreview1 from 'https://esm.sh/@easywasm/wasi'
-    import fflatefs from './fflatefs.js'
+    import fflatefs from 'fflatefs'
 
     const fs = await fflatefs('example.zip')
 

@@ -10,27 +10,28 @@ Install into your bundled project with `npm i @easywasm/wasi`. You can also use 
 
 ```html
 <script type="module">
-import WasiPreview1 from 'https://esm.sh/@easywasm/wasi'
+  import WasiPreview1 from 'https://esm.sh/@easywasm/wasi'
 </script>
 ```
 
 And I like to use sourcemaps:
+
 ```html
 <script type="importmap">
   {
     "imports": {
-      "@easywasm/wasi": "https://esm.sh/@easywasm/wasi"
+      "@easywasm/wasi": "https://esm.sh/@easywasm/wasi",
+      "fflatefs": "https://easywasm.github.io/wasi/fflatefs.js",
+      "fflate": "https://esm.sh/fflate/esm/browser.js"
     }
   }
 </script>
 <script type="module">
-import { WasiPreview1 } from '@easywasm/wasi'
+  import { WasiPreview1 } from '@easywasm/wasi'
 </script>
 ```
 
-
 ## usage
-
 
 You can use it without a filesystem, like this:
 
@@ -39,8 +40,10 @@ import WasiPreview1 from '@easywasm/wasi'
 
 const wasi_snapshot_preview1 = new WasiPreview1()
 
-const {instance: { exports }} = await WebAssembly.instantiateStreaming(fetch('example.wasm'), {
-  wasi_snapshot_preview1,
+const {
+  instance: { exports }
+} = await WebAssembly.instantiateStreaming(fetch('example.wasm'), {
+  wasi_snapshot_preview1
   // your imports here
 })
 
@@ -55,13 +58,15 @@ Now, i use a much simpler approach:
 
 ```js
 import WasiPreview1 from 'https://esm.sh/@easywasm/wasi'
-import fflatefs from 'https://gist.githubusercontent.com/konsumer/e5841b093c0b5aac80eb2a7a5b14be38/raw/3b17649341382d90d2f9050119cbd059b5d90dda/fflatefs.js'
+import fflatefs from 'fflatefs'
 
 const fs = await fflatefs('fs.zip')
-const wasi_snapshot_preview1 = new WasiPreview1({fs})
+const wasi_snapshot_preview1 = new WasiPreview1({ fs })
 
-const {instance: { exports }} = await WebAssembly.instantiateStreaming(fetch('example.wasm'), {
-  wasi_snapshot_preview1,
+const {
+  instance: { exports }
+} = await WebAssembly.instantiateStreaming(fetch('example.wasm'), {
+  wasi_snapshot_preview1
   // your imports here
 })
 
@@ -70,46 +75,46 @@ wasi_snapshot_preview1.start(exports)
 
 This implements the bare-min `statSync`/`readFileSync`. If you want more functionality, implement more, but that is all you really need to read files.
 
-
 Have a look in [example](docs) to see how I fit it all together.
 
 Keep in mind, you can easily override every function yourself, too, like if you want to implement the socket-API, which is the only thing I left out:
 
 ```js
-import {defs, WasiPreview1} from '@easywasm/wasi'
+import { defs, WasiPreview1 } from '@easywasm/wasi'
 
 class WasiPreview1WithSockets extends WasiPreview1 {
-  constructor(options={}) {
+  constructor(options = {}) {
     super(options)
     // do something with options to setup socket
   }
 
   // obviously implement these however
-  sock_accept (fd, flags) {
+  sock_accept(fd, flags) {
     return defs.ERRNO_NOSYS
   }
-  sock_recv (fd, riData, riFlags) {
+  sock_recv(fd, riData, riFlags) {
     return defs.ERRNO_NOSYS
   }
-  sock_send (fd, siData, riFlags) {
+  sock_send(fd, siData, riFlags) {
     return defs.ERRNO_NOSYS
   }
-  sock_shutdown (fd, how) {
+  sock_shutdown(fd, how) {
     return defs.ERRNO_NOSYS
   }
 }
 
 // usage
-const wasi_snapshot_preview1 = new WasiPreview1WithSockets({fs})
+const wasi_snapshot_preview1 = new WasiPreview1WithSockets({ fs })
 
-const {instance: { exports }} = await WebAssembly.instantiateStreaming(fetch('example.wasm'), {
+const {
+  instance: { exports }
+} = await WebAssembly.instantiateStreaming(fetch('example.wasm'), {
   wasi_snapshot_preview1
 })
 wasi_snapshot_preview1.start(exports)
 ```
 
 Have a look at [WasiPreview1](./docs/easywasi.js) to figure out how to implement it, if you want things to work differently.
-
 
 ## inspiration
 
