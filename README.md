@@ -19,23 +19,18 @@ And I like to use sourcemaps:
 <script type="importmap">
   {
     "imports": {
-      "@easywasm/wasi": "https://esm.sh/@easywasm/wasi",
-      "@zenfs/core": "https://esm.sh/@zenfs/core",
-      "@zenfs/dom": "https://esm.sh/@zenfs/dom",
-      "@zenfs/zip": "https://esm.sh/@zenfs/zip"
+      "@easywasm/wasi": "https://esm.sh/@easywasm/wasi"
     }
   }
 </script>
 <script type="module">
 import { WasiPreview1 } from '@easywasm/wasi'
-import { configure, InMemory, fs } from '@zenfs/core'
-import { IndexedDB } from '@zenfs/dom'
-import { Zip } from '@zenfs/zip'
 </script>
 ```
 
 
 ## usage
+
 
 You can use it without a filesystem, like this:
 
@@ -52,29 +47,17 @@ const {instance: { exports }} = await WebAssembly.instantiateStreaming(fetch('ex
 wasi_snapshot_preview1.start(exports)
 ```
 
-To really unlock it's power, though, give it an `fs` instance, like from [zen-fs](https://github.com/zen-fs/core). Here is an example that will mount a zip file to `/zip`, in-memory storage to `/tmp`, and IndexedDB to `/home`.
+To really unlock it's power, though, give it an `fs` instance.
 
-Things to note:
+I used to use [zenfs](https://github.com/zen-fs/core), but it seems broken every time I try, now. I think they intend that you use packaging and stuff, but I just want to import functional things from the web/cdn. In my opinion it's non-functional.
 
-- `/` has the default in-memory backend.
-- `/mnt` is a bit special in zenfs, and not traversed by a file-list, so if you want that, put it somewhere else
+Now, i use a much simpler approach:
 
 ```js
-import WasiPreview1 from '@easywasm/wasi'
-import { configure, InMemory } from '@zenfs/core'
-import { IndexedDB } from '@zenfs/dom'
-import { Zip } from '@zenfs/zip'
+import WasiPreview1 from 'https://esm.sh/@easywasm/wasi'
+import fflatefs from 'https://gist.githubusercontent.com/konsumer/e5841b093c0b5aac80eb2a7a5b14be38/raw/3b17649341382d90d2f9050119cbd059b5d90dda/fflatefs.js'
 
-await configure({
-  mounts: {
-    '/zip': { backend: Zip, data: await await fetch('mydata.zip').then(r => r.arrayBuffer()) },
-    '/tmp': InMemory,
-    '/home': IndexedDB
-  }
-})
-
-// here, you could use fs to modify filesystem however you need (write files, make directories, etc)
-
+const fs = await fflatefs('fs.zip')
 const wasi_snapshot_preview1 = new WasiPreview1({fs})
 
 const {instance: { exports }} = await WebAssembly.instantiateStreaming(fetch('example.wasm'), {
@@ -84,6 +67,9 @@ const {instance: { exports }} = await WebAssembly.instantiateStreaming(fetch('ex
 
 wasi_snapshot_preview1.start(exports)
 ```
+
+This implements the bare-min `statSync`/`readFileSync`. If you want more functionality, implement more, but that is all you really need to read files.
+
 
 Have a look in [example](docs) to see how I fit it all together.
 
