@@ -12,12 +12,10 @@ export default async function fflatefs(cartUrl) {
 
   const data = fflate.unzipSync(new Uint8Array(await fetch(cartUrl).then((r) => r.arrayBuffer())), {
     filter: (file) => {
-      if (file.name != 'main.wasm' && !file.name.endsWith('.DS_Store')) {
-        info[file.name] = file
-        info[file.name].type = file.name.endsWith('/') ? FILETYPE_DIRECTORY : FILETYPE_REGULAR_FILE
-        info[file.name].ino = ino++
-        return true
-      }
+      info[file.name] = file
+      info[file.name].type = file.name.endsWith('/') ? FILETYPE_DIRECTORY : FILETYPE_REGULAR_FILE
+      info[file.name].ino = ino++
+      return true // you can filter here
     }
   })
 
