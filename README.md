@@ -114,7 +114,7 @@ const {
 wasi_snapshot_preview1.start(exports)
 ```
 
-Have a look at [WasiPreview1](./docs/easywasi.js) to figure out how to implement it, if you want things to work differently.
+Have a look at [WasiPreview1](./src/easywasi.js) to figure out how to implement it, if you want things to work differently.
 
 ## inspiration
 
